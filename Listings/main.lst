@@ -1,0 +1,107 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              11/05/2024 18:29:09 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          
+   3          #define t_SEGMENT_MASK 0x78
+   4          #define C_SEGMENT_MASK 0x39
+   5          #define L_SEGMENT_MASK 0x38
+   6          #define O_SEGMENT_MASK 0x3F
+   7          
+   8          void delay_ms(unsigned int ms);
+   9          void init_io();
+  10          void display_segments(unsigned char pattern);
+  11          
+  12          void main() {
+  13   1        init_io();  
+  14   1        
+  15   1        while (1) {
+  16   2          display_segments(t_SEGMENT_MASK);
+  17   2          delay_ms(2000);
+  18   2          display_segments(C_SEGMENT_MASK);
+  19   2          delay_ms(2000);  
+  20   2          display_segments(L_SEGMENT_MASK);
+  21   2          delay_ms(2000);  
+  22   2          display_segments(O_SEGMENT_MASK);
+  23   2          delay_ms(2000);  
+  24   2          
+  25   2          }
+  26   1      }
+  27          
+  28          void display_segments(unsigned char pattern) {
+  29   1          if (pattern & 0x01) {
+  30   2              P2 |= 0x04;  // Set P2.2 (a) high
+  31   2          } else {
+  32   2              P2 &= ~0x04; // Set P2.2 (a) low
+  33   2          }
+  34   1          if (pattern & 0x02) {
+  35   2              P2 |= 0x02;  // Set P2.1 (b) high
+  36   2          } else {
+  37   2              P2 &= ~0x02; // Set P2.1 (b) low
+  38   2          }
+  39   1          if (pattern & 0x04) {
+  40   2              P2 |= 0x01;  // Set P2.0 (c) high
+  41   2          } else {
+  42   2              P2 &= ~0x01; // Set P2.0 (c) low
+  43   2          }
+  44   1          if (pattern & 0x08) {
+  45   2              P0 |= 0x80;  // Set P0.7 (d) high
+  46   2          } else {
+  47   2              P0 &= ~0x80; // Set P0.7 (d) low
+  48   2          }
+  49   1          if (pattern & 0x10) {
+  50   2              P0 |= 0x10;  // Set P0.4 (e) high
+  51   2          } else {
+  52   2              P0 &= ~0x10; // Set P0.4 (e) low
+  53   2          }
+  54   1          if (pattern & 0x20) {
+C51 COMPILER V9.60.7.0   MAIN                                                              11/05/2024 18:29:09 PAGE 2   
+
+  55   2              P0 |= 0x20;  // Set P0.5 (f) high
+  56   2          } else {
+  57   2              P0 &= ~0x20; // Set P0.5 (f) low
+  58   2          }
+  59   1          if (pattern & 0x40) {
+  60   2              P0 |= 0x40;  // Set P0.6 (g) high
+  61   2          } else {
+  62   2              P0 &= ~0x40; // Set P0.6 (g) low
+  63   2          }
+  64   1      }
+  65          
+  66          void init_io(){
+  67   1        P0 = 0x00;        //LD3 LD2 LD1 LD0 E F G D --> out
+  68   1        P1 = 0xFF;        //DF DL UF UL GL CL C3 C2 --> in
+  69   1        P2 = 0x00;        //C B A BZ UP DN 2S RC --> out
+  70   1        P3 = P3 | 0x7F;   //C1 C0 ST DZ OB UR DR --> in
+  71   1        P3 = P3 & ~0x80;  // FN --> out
+  72   1      }
+  73          
+  74          void delay_ms(unsigned int ms) {
+  75   1        unsigned int i, j;
+  76   1        for (i = 0; i < ms; i++) {
+  77   2          for (j = 0; j < 120; j++) {
+  78   3            //120 for 11.0592 MHz clock
+  79   3            }
+  80   2          }
+  81   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    172    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
